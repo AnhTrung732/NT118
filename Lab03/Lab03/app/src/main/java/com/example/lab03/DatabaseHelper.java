@@ -1,5 +1,6 @@
 package com.example.lab03;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -23,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         sqLiteDatabase.execSQL("create table " + TABLE_NAME +" (ID INTEGER PRIMARY KEY AUTOINCREMENT, CODE TEXT,NAME TEXT,MARKS TEXT)");
     }
 
@@ -60,18 +62,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getAllData(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cur = db.rawQuery("select * from " +TABLE_NAME,null);
+
         return cur;
     }
 
+    @SuppressLint("Range")
+    public void ShowAllData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("select * from " +TABLE_NAME,null);
+        String tableString = String.format("Table %s:\n", "QLSV");
+        if (cur.moveToFirst() ){
+            String[] columnNames = cur.getColumnNames();
+            do {
+                for (String name: columnNames) {
+                    tableString += String.format("%s: %s\n", name,
+                            cur.getString(cur.getColumnIndex(name)));
+                }
+                tableString += "\n";
+
+            } while (cur.moveToNext());
+        }
+        System.out.println(tableString);
+    }
     // Update Data of Database table
     public boolean updateData(String id, String code,String name,String marks){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues(); // Accessing content for overwrite
+        contentValues.put(TABLE_COL_1,id);
         contentValues.put(TABLE_COL_2,code);
         contentValues.put(TABLE_COL_3,name);
         contentValues.put(TABLE_COL_4,marks);
 
-        db.update(TABLE_NAME,contentValues, "ID = ?", new String[]{id});
+        db.update(TABLE_NAME,contentValues, String.format("%s = ?", "id"), new String[]{id});
         return true;
     }
 
