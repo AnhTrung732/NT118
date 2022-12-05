@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Lab04_3</string>
     <string name="quick_job">Quick Job</string>
     <string name="slow_job">Slow Job</string>
     <string name="please_wait">Some SLOW job is being done. Please wait...</string>
