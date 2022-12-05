@@ -2,6 +2,7 @@ package com.example.lab05_1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -60,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationRepeat(Animation animation) {
             }
         };
+        ivUitLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent iNewActivity = new Intent(MainActivity.this, Main2Activity.class);
+                startActivity(iNewActivity);
+
+                overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
+            }
+        });
     }
     private Animation initFadeInAnimation()
     {
@@ -145,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         findViewsByIds();
         initVariables();
